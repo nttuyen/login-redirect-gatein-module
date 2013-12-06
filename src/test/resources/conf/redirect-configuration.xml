@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.exoplaform.org/xml/ns/kernel_1_1.xsd http://www.exoplaform.org/xml/ns/kernel_1_1.xsd"
+	xmlns="http://www.exoplaform.org/xml/ns/kernel_1_1.xsd">
+
+	<component>
+		<key>org.exoplatform.services.security.IdentityRegistry</key>
+		<type>org.exoplatform.services.security.IdentityRegistry</type>
+	</component>
+
+	<component>
+		<key>org.exoplatform.web.login.redirect.LoginRedirectService</key>
+		<type>org.exoplatform.web.login.redirect.LoginRedirectService</type>
+		<init-params>
+			<value-param>
+				<name>defaultLoginURL</name>
+				<value>/portal/private/classic/defaultPage</value>
+			</value-param>
+			<value-param>
+				<name>defaultLogoutURL</name>
+				<value>/portal/public/classic/defaultPage</value>
+			</value-param>
+			<object-param>
+				<name>redirectMappings</name>
+				<description>Mappings of groups and pages where should be all users from particular group redirected.</description>
+				<object type="org.exoplatform.web.login.redirect.RedirectMappingConfig">
+					<field name="redirectMappings">
+						<collection type="java.util.ArrayList"
+							item-type="org.exoplatform.web.login.redirect.MappingParam">
+							<value>
+								<object type="org.exoplatform.web.login.redirect.MappingParam">
+									<field name="groupName">
+										<string>manager:/organization/management/executive-board</string>
+									</field>
+									<field name="loginURL">
+										<string>/portal/private/classic/organization/management</string>
+									</field>
+									<field name="logoutURL">
+										<string>/portal/public/classic/sitemap</string>
+									</field>
+								</object>
+							</value>
+							<value>
+								<object type="org.exoplatform.web.login.redirect.MappingParam">
+									<field name="groupName">
+										<string>*:/platform/administrators</string>
+									</field>
+									<field name="loginURL">
+										<string>/portal/private/classic/administration/registry</string>
+									</field>
+									<field name="logoutURL">
+										<string>/portal/public/classic/</string>
+									</field>
+								</object>
+							</value>
+						</collection>
+					</field>
+				</object>
+			</object-param>
+		</init-params>
+	</component>
+
+
+</configuration>
