@@ -1,2 +1,0 @@
-login-redirect-gatein-module
-============================
