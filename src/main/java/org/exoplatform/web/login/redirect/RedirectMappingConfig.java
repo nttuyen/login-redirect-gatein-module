@@ -28,20 +28,17 @@ import java.util.List;
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
  * @version $Revision$
  */
-public class RedirectMappingConfig
-{
-   
-   private List<MappingParam> redirectMappings;
+public class RedirectMappingConfig {
 
-   public List<MappingParam> getRedirectMappings()
-   {
-      return redirectMappings;
-   }
+    private List<MappingParam> redirectMappings;
 
-   public void setRedirectMappings(List<MappingParam> redirectMappings)
-   {
-      this.redirectMappings = redirectMappings;
-   }      
+    public List<MappingParam> getRedirectMappings() {
+        return redirectMappings;
+    }
+
+    public void setRedirectMappings(List<MappingParam> redirectMappings) {
+        this.redirectMappings = redirectMappings;
+    }
 
 }
 

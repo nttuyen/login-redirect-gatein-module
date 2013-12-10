@@ -26,41 +26,34 @@ package org.exoplatform.web.login.redirect;
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
  * @version $Revision$
  */
-public class MappingParam
-{
-   private String groupName;
-   private String loginURL;
-   private String logoutURL;
-   
-   public String getGroupName()
-   {
-      return groupName;
-   }
-   
-   public void setGroupName(String groupName)
-   {
-      this.groupName = groupName;
-   }
+public class MappingParam {
+    private String groupName;
+    private String loginURL;
+    private String logoutURL;
 
-   public String getLoginURL()
-   {
-      return loginURL;
-   }
+    public String getGroupName() {
+        return groupName;
+    }
 
-   public void setLoginURL(String loginURL)
-   {
-      this.loginURL = loginURL;
-   }
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 
-   public String getLogoutURL()
-   {
-      return logoutURL;
-   }
+    public String getLoginURL() {
+        return loginURL;
+    }
 
-   public void setLogoutURL(String logoutURL)
-   {
-      this.logoutURL = logoutURL;
-   }
-   
+    public void setLoginURL(String loginURL) {
+        this.loginURL = loginURL;
+    }
+
+    public String getLogoutURL() {
+        return logoutURL;
+    }
+
+    public void setLogoutURL(String logoutURL) {
+        this.logoutURL = logoutURL;
+    }
+
 }
 

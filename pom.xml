@@ -17,32 +17,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
-		<groupId>org.exoplatform.portal</groupId>
+		<groupId>org.gatein.portal</groupId>
 		<artifactId>exo.portal.parent</artifactId>
-		<version>3.2.0-Beta01</version>
+		<version>3.6.1.Final</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.exoplatform.portal</groupId>
+	<groupId>org.gatein.portal</groupId>
 	<artifactId>exo.portal.redirectplugin</artifactId>
-	<version>3.2.0-SNAPSHOT</version>
+	<!--<version>3.2.0-SNAPSHOT</version>-->
 	<packaging>jar</packaging>
 	<name>GateIn Portal plugin for user redirecting</name>
 	<description>GateIn web security services extension - services for redirecting user after login according to his role etc.</description>
 
-   <scm>
-      <connection>scm:svn:http://anonsvn.jboss.org/repos/qa/portal/login-redirect-gatein-module/trunk</connection>
-      <developerConnection>scm:svn:https://svn.jboss.org/repos/qa/portal/login-redirect-gatein-module/trunk</developerConnection>
-   </scm>
-
 	<dependencies>
       <dependency>
-         <groupId>org.exoplatform.portal</groupId>
+         <groupId>org.gatein.portal</groupId>
          <artifactId>exo.portal.component.web.security</artifactId>
+         <version>3.6.1.Final</version>
       </dependency>
       <dependency>
-         <groupId>org.exoplatform.portal</groupId>
+         <groupId>org.gatein.portal</groupId>
          <artifactId>exo.portal.component.test.core</artifactId>
+         <version>3.6.1.Final</version>
          <scope>test</scope>
       </dependency>
 	</dependencies>
@@ -52,7 +49,7 @@
 		<repository>
 			<id>jboss-public-repository-group</id>
 			<name>JBoss Public Maven Repository Group</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+			<url>https://repository.jboss.org/nexus/content/groups/public</url>
 			<layout>default</layout>
 			<releases>
 				<enabled>true</enabled>

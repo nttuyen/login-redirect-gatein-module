@@ -37,123 +37,107 @@ import org.gatein.common.logging.LoggerFactory;
 
 /**
  * This service contains mapping of groups and login/logout pages, so that it can decide where to redirect user
- * after his login or after his logout. 
- * 
+ * after his login or after his logout.
+ *
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
  * @version $Revision$
  */
-public class LoginRedirectService
-{
-   private static final Logger log = LoggerFactory.getLogger(LoginRedirectService.class);
-   
-   private final String defaultLoginURL;
-   private final String defaultLogoutURL;
-   private final Map<MembershipEntry, MappingParam> mappingConfiguration;
-   private final IdentityRegistry identityRegistry;
-   
-   // We need this map because Identity of particular user can't be obtained from IdentityRegistry when logout is detected.
-   // Key is username and value is his identity.
-   private ConcurrentMap<String, Identity> localIdentityRegistry = new ConcurrentHashMap<String, Identity>();
-   
-   public LoginRedirectService(InitParams params, IdentityRegistry identityRegistry)
-   {
-      this.defaultLoginURL = params.getValueParam("defaultLoginURL").getValue();
-      this.defaultLogoutURL = params.getValueParam("defaultLogoutURL").getValue();
-      
-      RedirectMappingConfig config = (RedirectMappingConfig)params.getObjectParam("redirectMappings").getObject();
-      Map<MembershipEntry, MappingParam> mappingConfigurationPom = new LinkedHashMap<MembershipEntry, MappingParam>();
-      
-      for (MappingParam mappingParam : config.getRedirectMappings())
-      {
-         MembershipEntry membership = MembershipEntry.parse(mappingParam.getGroupName());
-         mappingConfigurationPom.put(membership, mappingParam);
-      }
-      
-      mappingConfiguration = Collections.unmodifiableMap(mappingConfigurationPom); 
-      this.identityRegistry = identityRegistry;
-   }
-   
-   /**
-    * Return the page where particular user should be redirected after his login.
-    * 
-    * @param username
-    * @return page to redirect
-    */
-   public String getLoginRedirectURL(String username)
-   {
-      Identity identity = identityRegistry.getIdentity(username);
-      if (identity == null)
-      {
-         log.warn("Can't find identity for user " + username + " from identity registry. Custom redirect afer login will be disabled.");
-         return null;
-      }
-      
-      // store Identity to local map for later use
-      localIdentityRegistry.put(username, identity);
-      
-      for (MembershipEntry membership : mappingConfiguration.keySet())
-      {         
-         if (identity.isMemberOf(membership))
-         {
-            String resultURL = mappingConfiguration.get(membership).getLoginURL();
-            
-            if (log.isDebugEnabled())
-            {
-               log.debug("Redirecting user from group " + membership + " to page " + resultURL + ".");
-            }
-            return resultURL;
-         }
-      }               
-      
-      if (log.isDebugEnabled())
-      {
-         log.debug("Redirecting user " + username + " to default page " + defaultLoginURL);
-      }
-      return defaultLoginURL;              
-   }
-   
-   /**
-    * Return the page where particular user should be redirected after his logout.
-    * 
-    * @param username
-    * @return page to redirect
-    */
-   public String getLogoutRedirectURL(String username)
-   {
-      Identity identity = localIdentityRegistry.get(username);
+public class LoginRedirectService {
+    private static final Logger log = LoggerFactory.getLogger(LoginRedirectService.class);
 
-      // Try portal identityRegistry for case it's not in local	
-      if (identity == null)
-      {
-         identity = identityRegistry.getIdentity(username);
-      }  
+    private final String defaultLoginURL;
+    private final String defaultLogoutURL;
+    private final Map<MembershipEntry, MappingParam> mappingConfiguration;
+    private final IdentityRegistry identityRegistry;
 
-      if (identity == null)
-      {
-         log.warn("Can't find identity for user " + username + " in local registry.");
-         return defaultLogoutURL;
-      }      
-      
-      for (MembershipEntry membership : mappingConfiguration.keySet())
-      {         
-         if (identity.isMemberOf(membership))
-         {
-            String resultURL = mappingConfiguration.get(membership).getLogoutURL();
-            
-            if (log.isDebugEnabled())
-            {
-               log.debug("Redirecting user from group " + membership + " to page " + resultURL + ".");
+    // We need this map because Identity of particular user can't be obtained from IdentityRegistry when logout is detected.
+    // Key is username and value is his identity.
+    private ConcurrentMap<String, Identity> localIdentityRegistry = new ConcurrentHashMap<String, Identity>();
+
+    public LoginRedirectService(InitParams params, IdentityRegistry identityRegistry) {
+        this.defaultLoginURL = params.getValueParam("defaultLoginURL").getValue();
+        this.defaultLogoutURL = params.getValueParam("defaultLogoutURL").getValue();
+
+        RedirectMappingConfig config = (RedirectMappingConfig) params.getObjectParam("redirectMappings").getObject();
+        Map<MembershipEntry, MappingParam> mappingConfigurationPom = new LinkedHashMap<MembershipEntry, MappingParam>();
+
+        for (MappingParam mappingParam : config.getRedirectMappings()) {
+            MembershipEntry membership = MembershipEntry.parse(mappingParam.getGroupName());
+            mappingConfigurationPom.put(membership, mappingParam);
+        }
+
+        mappingConfiguration = Collections.unmodifiableMap(mappingConfigurationPom);
+        this.identityRegistry = identityRegistry;
+    }
+
+    /**
+     * Return the page where particular user should be redirected after his login.
+     *
+     * @param username
+     * @return page to redirect
+     */
+    public String getLoginRedirectURL(String username) {
+        Identity identity = identityRegistry.getIdentity(username);
+        if (identity == null) {
+            log.warn("Can't find identity for user " + username + " from identity registry. Custom redirect afer login will be disabled.");
+            return null;
+        }
+
+        // store Identity to local map for later use
+        localIdentityRegistry.put(username, identity);
+
+        for (MembershipEntry membership : mappingConfiguration.keySet()) {
+            if (identity.isMemberOf(membership)) {
+                String resultURL = mappingConfiguration.get(membership).getLoginURL();
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Redirecting user from group " + membership + " to page " + resultURL + ".");
+                }
+                return resultURL;
             }
-            return resultURL;
-         }
-      }               
-      
-      if (log.isDebugEnabled())
-      {
-         log.debug("Redirecting user " + username + " to default page " + defaultLogoutURL);
-      }
-      return defaultLogoutURL;             
-   }     
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Redirecting user " + username + " to default page " + defaultLoginURL);
+        }
+        return defaultLoginURL;
+    }
+
+    /**
+     * Return the page where particular user should be redirected after his logout.
+     *
+     * @param username
+     * @return page to redirect
+     */
+    public String getLogoutRedirectURL(String username) {
+        Identity identity = localIdentityRegistry.get(username);
+
+        // Try portal identityRegistry for case it's not in local
+        if (identity == null) {
+            identity = identityRegistry.getIdentity(username);
+        }
+
+        if (identity == null) {
+            log.warn("Can't find identity for user " + username + " in local registry.");
+            return defaultLogoutURL;
+        }
+
+        for (MembershipEntry membership : mappingConfiguration.keySet()) {
+            if (identity.isMemberOf(membership)) {
+                String resultURL = mappingConfiguration.get(membership).getLogoutURL();
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Redirecting user from group " + membership + " to page " + resultURL + ".");
+                }
+                return resultURL;
+            }
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug("Redirecting user " + username + " to default page " + defaultLogoutURL);
+        }
+        return defaultLogoutURL;
+    }
 
 }
 
